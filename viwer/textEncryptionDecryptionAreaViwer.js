@@ -12,7 +12,7 @@ class TextEncryptionDecryptionAreaViwer {
         this.encryptService = new EncryptService(this.dailyKey)
         this.decryptService = new DecryptService(this.dailyKey)
 
-        this.textToBeEncryptedArea.addEventListener("keyup", () => {
+        this.textToBeEncryptedArea.addEventListener("input", () => {
             try {
                 const lowerText = this.textToBeEncryptedToLower();
                 const communicationKey = this.communicationKeyArea.value
@@ -24,7 +24,7 @@ class TextEncryptionDecryptionAreaViwer {
             }
         });
 
-        this.communicationKeyArea.addEventListener("keyup", () => {
+        this.communicationKeyArea.addEventListener("input", () => {
             try {
                 const lowerText = this.textToBeEncryptedToLower();
                 const communicationKey = this.communicationKeyArea.value
@@ -36,7 +36,7 @@ class TextEncryptionDecryptionAreaViwer {
             }
         })
 
-        this.textToBeDecryptedArea.addEventListener("keyup", () => {
+        this.textToBeDecryptedArea.addEventListener("input", () => {
             try {
                 const cipherSentence = this.textToBeDecryptedArea.value
                 const decryptedData = this.decryptService.decrypt(cipherSentence)
@@ -45,7 +45,7 @@ class TextEncryptionDecryptionAreaViwer {
             } catch (error) {
                 if (error instanceof SyntaxError) {
                     this.generatedDecryptedTextArea.value = "復号したい文章は、\"6文字の小文字アルファベット + 半角空白 + 任意長の小文字アルファベット\"の形式でなければなりません"
-                    this.generatedDecryptedTextArea += "もしくは、通信鍵が不正な値の可能性があります"
+                    this.generatedDecryptedTextArea.value += "もしくは、通信鍵が不正な値の可能性があります"
                 }
             }
         })
