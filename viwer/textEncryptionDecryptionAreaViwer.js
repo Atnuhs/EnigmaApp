@@ -111,6 +111,9 @@ class TextEncryptionDecryptionAreaViwer {
         headline.style.margin = "5px"
         headline.style.padding = "10px"
         container.style.display = "flex"
+        container.style.justifyContent = "right"
+        container.style.flexFlow = "row"
+        container.style.flexWrap = "wrap"
         container.style.backgroundColor = "#aaa"
         container.style.margin = "5px"
 
@@ -134,6 +137,9 @@ class TextEncryptionDecryptionAreaViwer {
         headline.style.margin = "5px"
         headline.style.padding = "10px"
         container.style.display = "flex"
+        container.style.justifyContent = "right"
+        container.style.flexFlow = "row"
+        container.style.flexWrap = "wrap"
         container.style.backgroundColor = "#aaa"
         container.style.margin = "5px"
         container.appendChild(headline)
