@@ -10,19 +10,19 @@ class CommunicationKey {
 
     checkValidation() {
         if (this.str === undefined) {
-            throw new SyntaxError("Communication key should be defined")
+            throw new TypeError("Communication key should be defined")
         }
 
         if (this.str.length != 6) {
-            throw new SyntaxError("Communication key length should be 6")
+            throw new TypeError("Communication key length should be 6")
         }
 
         if (!this.asArray().every(char => this.keyPattern.test(char))) {
-            throw new SyntaxError("Communication key shoud be lower-case alphabet")
+            throw new TypeError("Communication key shoud be lower-case alphabet")
         }
 
         if (this.str.substring(0, 3) != this.str.substring(3, 6)) {
-            throw new SyntaxError("Communication key characters 1-3 and 4-6 must be equal")
+            throw new TypeError("Communication key characters 1-3 and 4-6 must be equal")
         }
     }
 

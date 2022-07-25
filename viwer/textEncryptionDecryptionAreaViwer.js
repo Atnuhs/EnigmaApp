@@ -18,7 +18,7 @@ class TextEncryptionDecryptionAreaViwer {
                 const communicationKey = this.communicationKeyArea.value
                 this.generatedCipherTextArea.value = this.encryptService.encrypt(lowerText, communicationKey)
             } catch (error) {
-                if (error instanceof SyntaxError) {
+                if (error instanceof TypeError) {
                     this.generatedCipherTextArea.value = "通信鍵は三文字小文字アルファベットの二回繰り返した形式でなければなりません\n例: psvpsv"
                 }
             }
@@ -30,7 +30,7 @@ class TextEncryptionDecryptionAreaViwer {
                 const communicationKey = this.communicationKeyArea.value
                 this.generatedCipherTextArea.value = this.encryptService.encrypt(lowerText, communicationKey)
             } catch (error) {
-                if (error instanceof SyntaxError) {
+                if (error instanceof TypeError) {
                     this.generatedCipherTextArea.value = "通信鍵は三文字小文字アルファベットの二回繰り返した形式でなければなりません\n例: psvpsv"
                 }
             }
@@ -43,7 +43,7 @@ class TextEncryptionDecryptionAreaViwer {
                 this.generatedDecryptedCommunicationKeyArea.value = decryptedData.communicationKey.str
                 this.generatedDecryptedTextArea.value = decryptedData.text
             } catch (error) {
-                if (error instanceof SyntaxError) {
+                if (error instanceof TypeError) {
                     this.generatedDecryptedTextArea.value = "復号したい文章は、\"6文字の小文字アルファベット + 半角空白 + 任意長の小文字アルファベット\"の形式でなければなりません"
                     this.generatedDecryptedTextArea.value += "もしくは、通信鍵が不正な値の可能性があります"
                 }

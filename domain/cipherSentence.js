@@ -13,15 +13,15 @@ class CipherSentence {
         }
 
         if (this.cipherCommunicationKey.length != 6) {
-            throw new SyntaxError("cipher sentence is invalid")
+            throw new TypeError("cipher sentence is invalid")
         }
 
         if (!this.cipherCommunicationKeyAsArray().every(char => this.keyPattern.test(char))) {
-            throw new SyntaxError("Cipher communication key shoud be lower-case alphabet")
+            throw new TypeError("Cipher communication key shoud be lower-case alphabet")
         }
 
         if (!this.cipherTextAsArray().every(char => this.keyPattern.test(char))) {
-            throw new SyntaxError("Cipher text shoud be lower-case alphabet")
+            throw new TypeError("Cipher text shoud be lower-case alphabet")
         }
 
     }
