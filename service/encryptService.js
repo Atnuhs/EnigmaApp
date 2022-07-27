@@ -8,7 +8,7 @@ class EncryptService {
         const rotors = [];
         for (let i = 0; i < dailyKey.numRotor; i++) {
             rotors.push(new enigma.Rotor(scramblerPreset[dailyKey.rotorsPresetOrder[i]]))
-            rotors[i].setAngle(dailyKey.rotorsAngle[i])
+            rotors[i].setAngle(dailyKey.rotorAngles[i])
         }
         const plugBoard = new enigma.PlugBoard(scramblerPreset[dailyKey.plugBoardScramblerPreset]);
         const reflector = new enigma.Reflector();
@@ -19,37 +19,30 @@ class EncryptService {
 
     setCommunicationKey(communicationKey) {
         this.setDailyKey()
-        let ret = []
-        for (const char of communicationKey.asArray()) {
-            if (!this.keyPattern.test(char)) continue;
-            const encryptedKey = this.enigma.typeKey(char);
-            ret.push(encryptedKey)
-        }
-        this.enigma.resetRotorAngle(communicationKey.rotorsAngle())
-        return ret.join("")
-    }
-
-
-    communicationErrorText() {
-        return 
+        const ret = communicationKey.toArray()
+            .map(char => this.enigma.typeKey(char))
+            .join("")
+        this.enigma.resetRotorAngles(communicationKey.rotorAngles())
+        return ret
     }
 
     setDailyKey() {
-        this.enigma.resetRotorAngle(this.dailyKey.rotorsAngle)
+        this.enigma.resetRotorAngles(this.dailyKey.rotorAngles)
     }
 
-    encrypt(lowerText, communicationKeystr) {
-        const communicationKey = new CommunicationKey(communicationKeystr)
-        const encryptedCommunicationKey = this.setCommunicationKey(communicationKey)
-        let ret = []
-        for (const char of lowerText.split("")) {
-            if (!this.keyPattern.test(char)) continue;
-            const encryptedKey = this.enigma.typeKey(char);
-            ret.push(encryptedKey)
+    async encrypt(lowerText, communicationKeyStr) {
+        try {
+            const communicationKey = await CommunicationKey.init(communicationKeyStr)
+            const encryptedCommunicationKey = this.setCommunicationKey(communicationKey)
+            const ret = lowerText.split("")
+                .filter(char => this.keyPattern.test(char))
+                .map(char => this.enigma.typeKey(char))
+                .join("")
+            return `${encryptedCommunicationKey} ${ret}`
+        } catch (error) {
+            return error
         }
-        return `${encryptedCommunicationKey} ${ret.join("")}`
     }
 }
-
 
 export { EncryptService }

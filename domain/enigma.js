@@ -73,7 +73,7 @@ class Rotor {
     }
 
     rotate() {
-        this.angle = (this.angle + 1) % 26;
+        this.angle++ % 26;
         return this.angle === 0;
     }
 
@@ -103,7 +103,7 @@ class Enigma {
         }
     }
 
-    resetRotorAngle(angles) {
+    resetRotorAngles(angles) {
         this.rotors.forEach((rotor, index) => {
             rotor.setAngle(angles[index])
         })

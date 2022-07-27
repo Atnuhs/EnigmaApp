@@ -1,43 +1,70 @@
-class CipherSentence {
-    constructor(cipherSentencestr) {
-        this.str = cipherSentencestr
-        this.keyPattern = /^[a-z]$/
-        this.checkValidation()
+import { CommunicationKey } from "./communicationKey.js"
+import { Text } from "./text.js"
+class CipherCommunicatonKey {
+    static init = async (text) => {
+        this.checkValidation(text)
+        const ret = new CipherCommunicatonKey()
+        ret.text = await Text.init(text)
+        return ret
     }
-
-    checkValidation() {
-        [this.cipherCommunicationKey, this.cipherText] = this.splitCommunicationKeyAndCipherText()
-        
-        if (this.cipherText === undefined) {
-            this.cipherText = ""
+    static checkValidation = async (text) => {
+        if (!text instanceof String) {
+            throw TypeError("CipherCommunicationKeyコンストラクタの引数はstring型でなければならない")
         }
-
-        if (this.cipherCommunicationKey.length != 6) {
-            throw new TypeError("cipher sentence is invalid")
+        if (text.length != 6) {
+            throw TypeError("CipherCommunicationKeyコンストラクタの引数は6文字の文字列でなければならない")
         }
-
-        if (!this.cipherCommunicationKeyAsArray().every(char => this.keyPattern.test(char))) {
-            throw new TypeError("Cipher communication key shoud be lower-case alphabet")
-        }
-
-        if (!this.cipherTextAsArray().every(char => this.keyPattern.test(char))) {
-            throw new TypeError("Cipher text shoud be lower-case alphabet")
-        }
-
     }
 
-    splitCommunicationKeyAndCipherText() {
-        return this.str.split(" ")
+    toString() {
+        return this.text.toString()
     }
 
-    cipherCommunicationKeyAsArray() {
-        return this.cipherCommunicationKey.split("")
+    toArray() {
+        return this.text.toArray()
     }
-
-    cipherTextAsArray() {
-        return this.cipherText.split("")
-    }
-
 }
 
-export { CipherSentence }
+class CipherText {
+    static init = async (text) => {
+        const ret = new CipherText()
+        ret.text = await Text.init(text)
+        return ret
+    }
+
+    toString() {
+        return this.text.toString()
+    }
+
+    toArray() {
+        return this.text.toArray()
+    }
+}
+
+class CipherSentence {
+    static splitCipherCommunicationKeyAndCipherText = async (cipherSentenceStr) => {
+        return this.checkValidation(cipherSentenceStr)
+    }
+
+    static reg = /^([a-z]{6}) ?([a-z]*)$/
+
+    static checkValidation = async (cipherSentenceStr) => {
+        if (!cipherSentenceStr instanceof String) {
+            throw TypeError("cipherSentenceコンストラクタの引数はstring型でなければならない")
+        }
+
+        const match = this.reg.exec(cipherSentenceStr)
+
+        if (match === null) {
+            throw TypeError("cipherSentenceコンストラクタの引数は先頭に6文字の小文字アルファベットが来なければならない")
+        }
+
+        const cipherCommunicationKeyStr = match[1]
+        const cipherTextStr = match[2]
+        const cipherCommunicationKey = CipherCommunicatonKey.init(cipherCommunicationKeyStr)
+        const cipherText = CipherText.init(cipherTextStr)
+        return Promise.all([cipherCommunicationKey, cipherText])
+    }
+}
+
+export { CipherSentence, CipherText, CipherCommunicatonKey}

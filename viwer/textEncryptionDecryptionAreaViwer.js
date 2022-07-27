@@ -1,51 +1,60 @@
 import { generateDailyKey } from "../service/dailyKeyService.js";
 import { EncryptService } from "../service/encryptService.js";
 import { DecryptService } from "../service/decryptService.js";
+import { CommunicationKey } from "../domain/communicationKey.js";
 
 class TextEncryptionDecryptionAreaViwer {
     constructor() {
         this.container = document.createElement("div")
         this.container.appendChild(this.header())
+        this.container.appendChild(this.details())
         this.container.appendChild(this.generateEncryptionDiv())
         this.container.appendChild(this.generateDecryptionDiv())
         this.dailyKey = generateDailyKey()
         this.encryptService = new EncryptService(this.dailyKey)
         this.decryptService = new DecryptService(this.dailyKey)
 
-        this.textToBeEncryptedArea.addEventListener("input", () => {
+        this.container.style.margin = "auto"
+        this.container.style.backgroundColor = "#aee"
+        this.container.style.color = "#433"
+        this.container.style.fontFamily = "Sawarabi Gothic"
+        this.container.style.fontSize = "26px"
+        this.container.style.maxWidth = "80%"
+
+        this.textToBeEncryptedArea.addEventListener("input", async () => {
+            const lowerText = this.textToBeEncryptedToLower();
+            const communicationKey = this.communicationKeyArea.value
             try {
-                const lowerText = this.textToBeEncryptedToLower();
-                const communicationKey = this.communicationKeyArea.value
-                this.generatedCipherTextArea.value = this.encryptService.encrypt(lowerText, communicationKey)
+                this.generatedCipherTextArea.value = await this.encryptService.encrypt(lowerText, communicationKey)
             } catch (error) {
                 if (error instanceof TypeError) {
-                    this.generatedCipherTextArea.value = "通信鍵は三文字小文字アルファベットの二回繰り返した形式でなければなりません\n例: psvpsv"
+                    this.generatedCipherTextArea.value = error.message
+                    console.error(error)
                 }
             }
         });
 
-        this.communicationKeyArea.addEventListener("input", () => {
+        this.communicationKeyArea.addEventListener("input", async () => {
+            const lowerText = this.textToBeEncryptedToLower();
+            const communicationKey = this.communicationKeyArea.value
             try {
-                const lowerText = this.textToBeEncryptedToLower();
-                const communicationKey = this.communicationKeyArea.value
-                this.generatedCipherTextArea.value = this.encryptService.encrypt(lowerText, communicationKey)
+                this.generatedCipherTextArea.value = await this.encryptService.encrypt(lowerText, communicationKey)
             } catch (error) {
-                if (error instanceof TypeError) {
-                    this.generatedCipherTextArea.value = "通信鍵は三文字小文字アルファベットの二回繰り返した形式でなければなりません\n例: psvpsv"
-                }
+                this.generatedCipherTextArea.value = error.message
+                console.error(error)
             }
         })
 
-        this.textToBeDecryptedArea.addEventListener("input", () => {
+        this.textToBeDecryptedArea.addEventListener("input", async () => {
+            const cipherSentence = this.textToBeDecryptedArea.value
             try {
-                const cipherSentence = this.textToBeDecryptedArea.value
-                const decryptedData = this.decryptService.decrypt(cipherSentence)
-                this.generatedDecryptedCommunicationKeyArea.value = decryptedData.communicationKey.str
+                const decryptedData = await this.decryptService.decrypt(cipherSentence)
+                this.generatedDecryptedCommunicationKeyArea.value = decryptedData.communicationKey
                 this.generatedDecryptedTextArea.value = decryptedData.text
             } catch (error) {
                 if (error instanceof TypeError) {
-                    this.generatedDecryptedTextArea.value = "復号したい文章は、\"6文字の小文字アルファベット + 半角空白 + 任意長の小文字アルファベット\"の形式でなければなりません"
-                    this.generatedDecryptedTextArea.value += "もしくは、通信鍵が不正な値の可能性があります"
+                    this.generatedDecryptedTextArea.value = error.message
+                    console.error(error)
                 }
             }
         })
@@ -55,12 +64,26 @@ class TextEncryptionDecryptionAreaViwer {
     header() {
         const container = document.createElement("div")
         const title = document.createElement("h1")
-        const describe = document.createElement("div")
-
         container.appendChild(title)
-        container.appendChild(describe)
-
         title.innerText = "エニグマ暗号化/復号化アプリ ver0.2"
+        title.style.fontSize = "3rem"
+        return container
+    }
+
+    details() {
+        const container = document.createElement("div")
+        const details = document.createElement("details")
+        const summary = document.createElement("summary")
+        const describe = document.createElement("p")
+        container.appendChild(details)
+        details.appendChild(summary)
+        details.appendChild(describe)
+        details.open = true
+        summary.innerText = "説明"
+        summary.style.fontSize = "30px"
+        describe.style.fontSize = "1rem"
+
+
         describe.innerText =
             `暗号化: 通信鍵と暗号化したい文章を入力すると、暗号化された文章が出てきます。
             通信鍵によってEnigmaの中身がscrambleされるため、同じ文章でも異なる通信鍵を用いることで、異なる暗号文が生成されます
