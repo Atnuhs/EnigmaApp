@@ -77,10 +77,13 @@ class TextEncryptionDecryptionAreaViwer {
         container.appendChild(details)
         details.appendChild(summary)
         details.appendChild(describe)
-        details.open = false
+        details.open = true
         summary.innerText = "説明"
         summary.style.fontSize = "30px"
+        summary.style.fontWeight = "bold"
+        summary.style.color = "hsla(111, 100%, 40%, 1)"
         describe.style.fontSize = "1rem"
+        describe.style.color = "hsla(111, 70%, 35%, 0.8)"
 
 
         describe.innerText =

@@ -25,6 +25,7 @@ class TextContainer {
 
         this.input.style.boxSizing = "border-box"
         this.input.style.width = "100%"
+        this.input.style.fontSize = "16px"
     }
 }
 
@@ -53,6 +54,7 @@ class TextAreaContainer {
 
         this.input.rows = 8
         this.input.cols = 30
+        this.input.style.fontSize = "16px"
     }
 }
 
