@@ -21,43 +21,36 @@ class TextEncryptionDecryptionAreaViwer {
         this.container.style.fontSize = "26px"
         this.container.style.maxWidth = "80%"
 
-        this.textToBeEncryptedArea.addEventListener("input", async () => {
-            const lowerText = this.textToBeEncryptedToLower();
-            const communicationKey = this.communicationKeyArea.value
-            try {
-                this.generatedCipherTextArea.value = await this.encryptService.encrypt(lowerText, communicationKey)
-            } catch (error) {
-                if (error instanceof TypeError) {
-                    this.generatedCipherTextArea.value = error.message
-                    console.error(error)
-                }
-            }
-        });
+        this.textToBeEncryptedArea.addEventListener("input", this.eventEncrypt);
+        this.communicationKeyArea.addEventListener("input", this.eventEncrypt);
+        this.textToBeDecryptedArea.addEventListener("input",this.eventDecrypt);
+    }
 
-        this.communicationKeyArea.addEventListener("input", async () => {
-            const lowerText = this.textToBeEncryptedToLower();
-            const communicationKey = this.communicationKeyArea.value
-            try {
-                this.generatedCipherTextArea.value = await this.encryptService.encrypt(lowerText, communicationKey)
-            } catch (error) {
+    async eventEncrypt() {
+        const lowerText = this.textToBeEncryptedToLower();
+        const communicationKey = this.communicationKeyArea.value
+        try {
+            this.generatedCipherTextArea.value = await this.encryptService.encrypt(lowerText, communicationKey)
+        } catch (error) {
+            if (error instanceof TypeError) {
                 this.generatedCipherTextArea.value = error.message
                 console.error(error)
             }
-        })
+        }
+    }
 
-        this.textToBeDecryptedArea.addEventListener("input", async () => {
-            const cipherSentence = this.textToBeDecryptedArea.value
-            try {
-                const decryptedData = await this.decryptService.decrypt(cipherSentence)
-                this.generatedDecryptedCommunicationKeyArea.value = decryptedData.communicationKey
-                this.generatedDecryptedTextArea.value = decryptedData.text
-            } catch (error) {
-                if (error instanceof TypeError) {
-                    this.generatedDecryptedTextArea.value = error.message
-                    console.error(error)
-                }
+    async eventDecrypt() {
+        const cipherSentence = this.textToBeDecryptedArea.value
+        try {
+            const decryptedData = await this.decryptService.decrypt(cipherSentence)
+            this.generatedDecryptedCommunicationKeyArea.value = decryptedData.communicationKey
+            this.generatedDecryptedTextArea.value = decryptedData.text
+        } catch (error) {
+            if (error instanceof TypeError) {
+                this.generatedDecryptedTextArea.value = error.message
+                console.error(error)
             }
-        })
+        }
     }
 
 
