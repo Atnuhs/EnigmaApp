@@ -1,9 +1,8 @@
-import { generateDailyKey } from "../service/dailyKeyService.js";
-import { EncryptService } from "../service/encryptService.js";
-import { DecryptService } from "../service/decryptService.js";
-import { EncryptContainer, DecryptContainer} from "./inputElement.js";
+import { EncryptContainer, DecryptContainer } from "./inputElement.js";
 import { HeaderContainer } from "./header.js";
 import { Details } from "./details.js";
+import { EncryptScenario } from "../encrypt/encryptScenario.js";
+import { DecryptScenario } from "../decrypt/decryptScenario.js";
 
 class TextEncryptionDecryptionAreaViwer {
     constructor() {
@@ -16,9 +15,8 @@ class TextEncryptionDecryptionAreaViwer {
         this.container.appendChild(this.encryptContainer.container)
         this.container.appendChild(this.decryptContainer.container)
 
-        this.dailyKey = generateDailyKey()
-        this.encryptService = new EncryptService(this.dailyKey)
-        this.decryptService = new DecryptService(this.dailyKey)
+        this.encryptScenario = new EncryptScenario()
+        this.decryptScenario = new DecryptScenario()
 
         this.container.style.margin = "auto"
         this.container.style.position = "relative"
@@ -35,11 +33,11 @@ class TextEncryptionDecryptionAreaViwer {
     }
 
     eventEncrypt() {
-        return async () => {
+        return () => {
             const lowerText = this.encryptContainer.textToEncryptValue().toLowerCase();
             const communicationKey = this.encryptContainer.communicationKeyValue()
             try {
-                this.encryptContainer.encryptedTextContainer.input.value = await this.encryptService.encrypt(lowerText, communicationKey)
+                this.encryptContainer.encryptedTextContainer.input.value = this.encryptScenario.encrypt(lowerText, communicationKey)
             } catch (error) {
                 if (error instanceof TypeError) {
                     this.encryptContainer.encryptedTextContainer.input.value = error.message
@@ -51,11 +49,12 @@ class TextEncryptionDecryptionAreaViwer {
 
     eventDecrypt() {
         return async () => {
-            const cipherSentence = this.decryptContainer.textToDecryptValue()
+            const textToDecrypt = this.decryptContainer.textToDecryptValue()
             try {
-                const decryptedData = await this.decryptService.decrypt(cipherSentence)
-                this.decryptContainer.decryptedCommunicationKeyContainer.input.value = decryptedData.communicationKey
-                this.decryptContainer.decryptedTextContainer.input.value = decryptedData.text
+                [
+                    this.decryptContainer.decryptedCommunicationKeyContainer.input.value, 
+                    this.decryptContainer.decryptedTextContainer.input.value
+                ] = this.decryptScenario.decrypt(textToDecrypt)
             } catch (error) {
                 if (error instanceof TypeError) {
                     this.decryptContainer.decryptedTextContainer.input.value = error.message

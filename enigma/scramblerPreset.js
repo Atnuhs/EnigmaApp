@@ -1,5 +1,5 @@
 
-import * as enigma from "./enigma.js";
+import { Scrambler } from "./enigma.js";
 
 const generate_wiring_diagram = () => {
     return Array(26)
@@ -20,10 +20,10 @@ const generate_scrambled_wiring_diagram = (numIter, x, y) => {
 }
 
 
-const generate_scrambler_type1 = () => new enigma.Scrambler(generate_scrambled_wiring_diagram(100, 1, 1))
-const generate_scrambler_type2 = () => new enigma.Scrambler(generate_scrambled_wiring_diagram(100, 10, 2))
-const generate_scrambler_type3 = () => new enigma.Scrambler(generate_scrambled_wiring_diagram(100, 22, 8))
+const generate_scrambler_type1 = () => new Scrambler(generate_scrambled_wiring_diagram(100, 1, 1))
+const generate_scrambler_type2 = () => new Scrambler(generate_scrambled_wiring_diagram(100, 10, 2))
+const generate_scrambler_type3 = () => new Scrambler(generate_scrambled_wiring_diagram(100, 22, 8))
 
 const scramblerPreset = [generate_scrambler_type1(), generate_scrambler_type2(), generate_scrambler_type3()]
 
-export {scramblerPreset}
+export { scramblerPreset }
