@@ -1,175 +1,306 @@
 
 class TextContainer {
-    constructor (headlineText) {
-        this.container = document.createElement("div")
-        this.headline = document.createElement("p")
-        this.input = document.createElement("input")
-        this.message = document.createElement("p")
+    constructor(headlineText) {
+        this.container = TextContainer.#container()
+        this.headline = TextContainer.#headline(headlineText)
+        this.input = TextContainer.#input()
+        this.message = TextContainer.#message()
 
         this.container.appendChild(this.headline)
         this.container.appendChild(this.input)
         this.container.appendChild(this.message)
+    }
 
-        this.container.style.backgroundColor = "#eee"
-        this.container.style.minWidth = "10rem"
-        this.container.style.borderRadius = "30% / 15%"
-        this.container.style.padding = "8px"
-        this.container.style.margin = "auto"
+    static #container = () => {
+        const container = document.createElement("div")
 
-        this.container.style.display = "flex"
-        this.container.style.flexDirection = "column"
-        this.container.style.alignItems = "center"
-        this.container.style.justifyContent = "center"
-        
-        this.headline.innerText = headlineText
+        container.style.backgroundColor = "#eee"
+        container.style.minWidth = "10rem"
+        container.style.borderRadius = "30% / 15%"
+        container.style.padding = "8px"
+        container.style.margin = "auto"
 
-        this.input.style.boxSizing = "border-box"
-        this.input.style.width = "100%"
-        this.input.style.fontSize = "16px"
+        container.style.display = "flex"
+        container.style.flexDirection = "column"
+        container.style.alignItems = "center"
+        container.style.justifyContent = "center"
+        return container
+    }
+
+    static #headline = (headlineText) => {
+        const headline = document.createElement("p")
+
+        headline.innerText = headlineText
+        return headline
+    }
+
+    static #input = () => {
+        const input = document.createElement("input")
+
+        input.style.boxSizing = "border-box"
+        input.style.width = "100%"
+        input.style.fontSize = "16px"
+
+        return input
+    }
+
+    static #message = () => {
+        const message = document.createElement("p")
+        return message
+    }
+
+    getInputValue = () => {
+        return this.input.value
+    }
+
+    setInputValue = (value) => {
+        this.input.value = value
     }
 }
 
 
 class TextAreaContainer {
-    constructor (headlineText) {
-        this.container = document.createElement("div")
-        this.headline = document.createElement("p")
-        this.input = document.createElement("textarea")
-        this.message = document.createElement("p")
+    constructor(headlineText) {
+        this.container = TextAreaContainer.#container()
+        this.headline = TextAreaContainer.#headline(headlineText)
+        this.textArea = TextAreaContainer.#textArea()
+        this.message = TextAreaContainer.#message()
 
         this.container.appendChild(this.headline)
-        this.container.appendChild(this.input)
+        this.container.appendChild(this.textArea)
         this.container.appendChild(this.message)
+    }
 
-        this.container.style.backgroundColor = "#eee"
-        this.container.style.borderRadius = "30% / 15%"
-        this.container.style.padding = "8px"
-        this.container.style.margin = "auto"
-        this.container.style.justifyContent = "center"
-        
-        this.container.style.display = "flex"
-        this.container.style.flexDirection = "column"
-        this.container.style.alignItems = "center"
-        this.headline.innerText = headlineText
+    static #container = () => {
+        const container = document.createElement("div")
 
-        this.input.rows = 8
-        this.input.cols = 30
-        this.input.style.fontSize = "16px"
+        container.style.backgroundColor = "#eee"
+        container.style.minWidth = "10rem"
+        container.style.borderRadius = "30% / 15%"
+        container.style.padding = "8px"
+        container.style.margin = "auto"
+
+        container.style.display = "flex"
+        container.style.flexDirection = "column"
+        container.style.alignItems = "center"
+        container.style.justifyContent = "center"
+        return container
+    }
+
+    static #headline = (headlineText) => {
+        const headline = document.createElement("p")
+
+        headline.innerText = headlineText
+        return headline
+    }
+
+    static #textArea = () => {
+        const input = document.createElement("textArea")
+
+        input.rows = 8
+        input.cols = 30
+        input.style.fontSize = "16px"
+        return input
+    }
+
+    static #message = () => {
+        const message = document.createElement("p")
+        return message
+    }
+
+    getInputValue = () => {
+        return this.textArea.value
+    }
+
+    setInputValue = (value) => {
+        this.textArea.value = value
     }
 }
 
 class EncryptContainer {
     constructor() {
-        this.container = document.createElement("div")
-        this.headline = document.createElement("p")
-        this.innerContainer = document.createElement("div")
-        this.communicationKeyContainer = new TextContainer("通信鍵")
-        this.textToEncryptContainer = new TextAreaContainer("平文")
-        this.encryptedTextContainer = new TextAreaContainer("暗号文")
+        this.container = EncryptContainer.#container()
+        this.headline = EncryptContainer.#headline()
+        this.innerContainer = EncryptContainer.#innerContainer()
+        this.communicationKeyContainer = EncryptContainer.#communicationKeyContainer()
+        this.textToEncryptContainer = EncryptContainer.#textToEncryptContainer()
+        this.encryptedTextContainer = EncryptContainer.#encryptedTextContainer()
 
         this.container.appendChild(this.headline)
         this.container.appendChild(this.innerContainer)
         this.innerContainer.appendChild(this.communicationKeyContainer.container)
         this.innerContainer.appendChild(this.textToEncryptContainer.container)
         this.innerContainer.appendChild(this.encryptedTextContainer.container)
-
-        this.format()
     }
 
-    format() {
-        this.container.style.backgroundColor = "#fbb"
-        this.container.style.padding = "5px 30px"
 
-        this.headline.innerText = "暗号化"
-        this.headline.style.backgroundColor = "hsla(260,100%,70%,0.5)"
-        this.headline.style.margin = "5px"
-        this.headline.style.padding = "5px 30px"
-        this.headline.style.borderRadius = "20% / 50%"
+    static #container = () => {
+        const container = document.createElement("div")
 
-        this.headline.style.width = "fit-content"
+        container.style.backgroundColor = "#fbb"
+        container.style.padding = "5px 30px"
+        return container
+    }
 
-        this.innerContainer.style.display = "flex"
-        this.innerContainer.style.justifyContent = "center"
-        this.innerContainer.style.flexFlow = "wrap"
-        this.innerContainer.style.margin = "5px"
-        this.innerContainer.style.padding = "5px"
-        
-        this.communicationKeyContainer.input.maxLength = 6
-        this.communicationKeyContainer.input.placeholder = "psvpsv"
-        this.communicationKeyContainer.input.pattern = /([a-z]{3}){6}/
-        
-        this.communicationKeyContainer.container.style.border = "5px solid #7dd"
-        this.communicationKeyContainer.headline.style.color = "#4aa"
+    static #headline = () => {
+        const headline = document.createElement("p")
 
+        headline.innerText = "暗号化"
+        headline.style.backgroundColor = "hsla(260,100%,70%,0.5)"
+        headline.style.margin = "5px"
+        headline.style.padding = "5px 30px"
+        headline.style.borderRadius = "20% / 50%"
+        headline.style.width = "fit-content"
+        return headline
+    }
+
+    static #innerContainer = () => {
+        const innerContainer = document.createElement("div")
+
+        innerContainer.style.display = "flex"
+        innerContainer.style.justifyContent = "center"
+        innerContainer.style.flexFlow = "wrap"
+        innerContainer.style.margin = "5px"
+        innerContainer.style.padding = "5px"
+        return innerContainer
+    }
+
+    static #communicationKeyContainer = () => {
+        const communicationKeyContainer = new TextContainer("通信鍵")
+
+        communicationKeyContainer.input.maxLength = 6
+        communicationKeyContainer.input.placeholder = "psvpsv"
+        communicationKeyContainer.input.pattern = /([a-z]{3}){2}/
+        communicationKeyContainer.container.style.border = "5px solid #7dd"
+        communicationKeyContainer.headline.style.color = "#4aa"
+        return communicationKeyContainer
+    }
+
+    static #textToEncryptContainer = () => {
+        const textToEncryptContainer = new TextAreaContainer("平文")
+
+        textToEncryptContainer.container.style.border = "5px solid #7dd"
+        textToEncryptContainer.headline.style.color = "#4aa"
+        return textToEncryptContainer
+    }
+
+    static #encryptedTextContainer = () => {
+        const encryptedTextContainer = new TextAreaContainer("暗号文")
+
+        return encryptedTextContainer
+    }
+
+    getContainer() {
+        return this.container
     }
 
     communicationKeyValue() {
-        return this.communicationKeyContainer.input.value
+        return this.communicationKeyContainer.getInputValue()
     }
 
     textToEncryptValue() {
-        return this.textToEncryptContainer.input.value
+        return this.textToEncryptContainer.getInputValue()
     }
-    
+
     encryptedTextValue() {
-        return this.encryptedTextContainer.input.value
+        return this.encryptedTextContainer.getInputValue()
+    }
+
+
+    setEncryptedText(encryptedText) {
+        this.encryptedTextContainer.setInputValue(encryptedText)
     }
 }
 
 class DecryptContainer {
     constructor() {
-        this.container = document.createElement("div")
-        this.headline = document.createElement("p")
-        this.innerContainer = document.createElement("div")
-        this.textToDecryptContainer = new TextAreaContainer("暗号文")
-        this.decryptedCommunicationKeyContainer = new TextContainer("通信鍵")
-        this.decryptedTextContainer = new TextAreaContainer("復号化された文")
+        this.container = DecryptContainer.#container()
+        this.headline = DecryptContainer.#headline()
+        this.innerContainer = DecryptContainer.#innerContainer()
+        this.textToDecryptContainer = DecryptContainer.#textToDecryptContainer()
+        this.decryptedCommunicationKeyContainer = DecryptContainer.#decryptedCommunicationKeyContainer()
+        this.decryptedTextContainer = DecryptContainer.#decryptedTextContainer()
 
         this.container.appendChild(this.headline)
         this.container.appendChild(this.innerContainer)
         this.innerContainer.appendChild(this.textToDecryptContainer.container)
         this.innerContainer.appendChild(this.decryptedCommunicationKeyContainer.container)
         this.innerContainer.appendChild(this.decryptedTextContainer.container)
-
-        this.format()
     }
 
-    format() {
-        this.container.style.backgroundColor = "#bfb"
-        this.container.style.padding = "5px 30px"
+    static #container = () => {
+        const container = document.createElement("div")
 
-        this.headline.innerText = "復号化"
-        this.headline.style.backgroundColor = "hsla(260,100%,70%,0.5)"
-        this.headline.style.margin = "5px"
-        this.headline.style.padding = "5px 30px"
-        this.headline.style.borderRadius = "20% / 50%"
-        this.headline.style.width = "fit-content"
+        container.style.backgroundColor = "#bfb"
+        container.style.padding = "5px 30px"
+        return container
+    }
 
-        this.innerContainer.style.display = "flex"
-        this.innerContainer.style.justifyContent = "center"
-        this.innerContainer.style.flexFlow = "wrap"
-        this.innerContainer.style.margin = "5px"
-        this.innerContainer.style.padding = "5px"
+    static #headline = () => {
+        const headline = document.createElement("p")
 
+        headline.innerText = "復号化"
+        headline.style.backgroundColor = "hsla(260,100%,70%,0.5)"
+        headline.style.margin = "5px"
+        headline.style.padding = "5px 30px"
+        headline.style.borderRadius = "20% / 50%"
+        headline.style.width = "fit-content"
+        return headline
+    }
 
-        this.textToDecryptContainer.container.style.border = "5px solid #7dd"
-        this.textToDecryptContainer.headline.style.color = "#4aa"
-        
-        this.decryptedCommunicationKeyContainer.input.maxLength = 6
-        this.decryptedCommunicationKeyContainer.input.placeholder = "psvpsv"
-        this.decryptedCommunicationKeyContainer.input.pattern = /([a-z]{3}){6}/
+    static #innerContainer = () => {
+        const innerContainer = document.createElement("div")
+
+        innerContainer.style.display = "flex"
+        innerContainer.style.justifyContent = "center"
+        innerContainer.style.flexFlow = "wrap"
+        innerContainer.style.margin = "5px"
+        innerContainer.style.padding = "5px"
+        return innerContainer
+    }
+
+    static #textToDecryptContainer = () => {
+        const textToDecryptContainer = new TextAreaContainer("暗号文")
+
+        textToDecryptContainer.container.style.border = "5px solid #7dd"
+        textToDecryptContainer.headline.style.color = "#4aa"
+        return textToDecryptContainer
+    }
+
+    static #decryptedCommunicationKeyContainer = () => {
+        const decryptedCommunicationKeyContainer = new TextContainer("復号化された通信鍵")
+
+        return decryptedCommunicationKeyContainer
+    }
+
+    static #decryptedTextContainer = () => {
+        const decryptedTextContainer = new TextAreaContainer("復号化された文")
+
+        return decryptedTextContainer
+    }
+
+    getContainer = () => {
+        return this.container
     }
 
     decyptedCommunicationKeyValue() {
-        return this.decryptedCommunicationKeyContainer.input.value
+        return this.decryptedCommunicationKeyContainer.getInputValue()
     }
 
     textToDecryptValue() {
-        return this.textToDecryptContainer.input.value
+        return this.textToDecryptContainer.getInputValue()
     }
-    
+
     decryptedTextValue() {
-        return this.decryptedTextContainer.input.value
+        return this.decryptedTextContainer.getInputValue()
+    }
+
+    setDecryptedCommunicationKey(decryptedCommunicationKey) {
+        this.decryptedCommunicationKeyContainer.setInputValue(decryptedCommunicationKey)
+    }
+
+    setDecryptedText(decryptedText) {
+        this.decryptedTextContainer.setInputValue(decryptedText)
     }
 }
 export { EncryptContainer, DecryptContainer }
