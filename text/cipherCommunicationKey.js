@@ -9,7 +9,7 @@ class CipherCommunicatonKey {
 
     #checkValidation() {
         if (this.toString().length != 6) {
-            throw TypeError("CipherCommunicationKeyは6文字の文字列でなければならない")
+            throw TypeError("暗号文の秘密鍵箇所は6文字の文字列でなければならない")
         }
     }
 

@@ -2,13 +2,13 @@ class Details {
     static details = () => {
         const details = document.createElement("details")
 
-        details.appendChild(this.summary())
-        details.appendChild(this.describe())
+        details.appendChild(this.#summary())
+        details.appendChild(this.#describe())
         details.open = false
         return details
     }
 
-    static summary = () => {
+    static #summary = () => {
         const summary = document.createElement("summary")
 
         summary.innerText = "説明"
@@ -18,7 +18,7 @@ class Details {
         return summary
     }
 
-    static describe = () => {
+    static #describe = () => {
         const describe = document.createElement("p")
 
         describe.style.fontSize = "1rem"
