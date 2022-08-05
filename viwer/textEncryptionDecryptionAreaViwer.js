@@ -42,32 +42,22 @@ class TextEncryptionDecryptionAreaViwer {
         return () => {
             const inputText = this.encryptContainer.textToEncryptValue();
             const inputCommunicationKey = this.encryptContainer.communicationKeyValue()
-            try {
-                this.encryptContainer.setEncryptedText(
-                    this.encryptScenario.encrypt(inputText, inputCommunicationKey)
-                )
-            } catch (error) {
-                if (error instanceof TypeError) {
-                    this.encryptContainer.encryptedTextContainer.setInputValue(error.message)
-                }
-                console.error(error)
-            }
+            const [encryptedText, messageCommunicationKeyArea, messageTextArea]
+                = this.encryptScenario.encrypt(inputText, inputCommunicationKey)
+            this.encryptContainer.setCautionCommunicationKey(messageCommunicationKeyArea)
+            this.encryptContainer.setCautionTextToEncrypt(messageTextArea)
+            this.encryptContainer.setEncryptedText(encryptedText)
         }
     }
 
     eventDecrypt() {
         return async () => {
             const textToDecrypt = this.decryptContainer.textToDecryptValue()
-            try {
-                const [communicationKey, text] = this.decryptScenario.decrypt(textToDecrypt)
-                this.decryptContainer.setDecryptedCommunicationKey(communicationKey)
-                this.decryptContainer.setDecryptedText(text)
-            } catch (error) {
-                if (error instanceof TypeError) {
-                    this.decryptContainer.decryptedTextContainer.setInputValue(error.message)
-                }
-                console.error(error)
-            }
+            const [communicationKey, text, messageTextToDecrypt]
+                = this.decryptScenario.decrypt(textToDecrypt)
+            this.decryptContainer.setCautionTextToDecrypt(messageTextToDecrypt)
+            this.decryptContainer.setDecryptedCommunicationKey(communicationKey)
+            this.decryptContainer.setDecryptedText(text)
         }
     }
 }

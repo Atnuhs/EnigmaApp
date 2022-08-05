@@ -15,7 +15,7 @@ class TextContainer {
         const container = document.createElement("div")
 
         container.style.backgroundColor = "#eee"
-        container.style.minWidth = "10rem"
+        container.style.width = "10rem"
         container.style.borderRadius = "30% / 15%"
         container.style.padding = "8px"
         container.style.margin = "auto"
@@ -46,6 +46,7 @@ class TextContainer {
 
     static #message = () => {
         const message = document.createElement("p")
+        message.style.overflowWrap = "word-break"
         return message
     }
 
@@ -55,6 +56,13 @@ class TextContainer {
 
     setInputValue = (value) => {
         this.input.value = value
+    }
+
+    setCautionMessage(message) {
+        this.message.innerText = message
+        this.message.style.color = "#f33"
+        this.message.style.fontSize = "16px"
+        this.message.style.fontStyle = "bold"
     }
 }
 
@@ -114,6 +122,13 @@ class TextAreaContainer {
 
     setInputValue = (value) => {
         this.textArea.value = value
+    }
+
+    setCautionMessage(message) {
+        this.message.innerText = message
+        this.message.style.color = "#f33"
+        this.message.style.fontSize = "16px"
+        this.message.style.fontStyle = "bold"
     }
 }
 
@@ -206,9 +221,16 @@ class EncryptContainer {
         return this.encryptedTextContainer.getInputValue()
     }
 
-
     setEncryptedText(encryptedText) {
         this.encryptedTextContainer.setInputValue(encryptedText)
+    }
+
+    setCautionCommunicationKey(message) {
+        this.communicationKeyContainer.setCautionMessage(message)
+    }
+
+    setCautionTextToEncrypt(message) {
+        this.textToEncryptContainer.setCautionMessage(message)
     }
 }
 
@@ -301,6 +323,10 @@ class DecryptContainer {
 
     setDecryptedText(decryptedText) {
         this.decryptedTextContainer.setInputValue(decryptedText)
+    }
+
+    setCautionTextToDecrypt(message) {
+        this.textToDecryptContainer.setCautionMessage(message)
     }
 }
 export { EncryptContainer, DecryptContainer }

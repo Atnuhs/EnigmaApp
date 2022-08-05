@@ -17,7 +17,7 @@ class Text {
     }
 
     #checkValidation() {
-        if (!Text.isValid(this.textString)) {
+        if (!Text.isValid(this.#value)) {
             throw TypeError("Textは小文字アルファベットでなければならない")
         }
     }
