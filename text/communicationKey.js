@@ -10,11 +10,11 @@ class CommunicationKey {
 
     #checkValidation() {
         if (this.toString().length != 6) {
-            throw new TypeError("CommunicationKeyコンストラクタの引数は6文字でなければならない")
+            throw new TypeError("秘密鍵は6文字でなければならない")
         }
 
         if (this.toString().substring(0, 3) != this.toString().substring(3, 6)) {
-            throw new TypeError("CommunicationKeyコンストラクタの引数は1-3文字目の部分文字列と4-6文字目の部分文字列が等しくなければならない")
+            throw new TypeError("秘密鍵は1-3文字目の部分文字列と4-6文字目の部分文字列が等しくなければならない")
         }
     }
 

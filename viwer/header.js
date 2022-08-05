@@ -3,11 +3,11 @@ class HeaderContainer {
     static headerContainer = () => {
         const container = document.createElement("div")
 
-        container.appendChild(this.header())
+        container.appendChild(this.#header())
         return container
     }
 
-    static header = () => {
+    static #header = () => {
         const header = document.createElement("h1")
 
         header.innerText = "エニグマ暗号化/復号化アプリ ver0.3"

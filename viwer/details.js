@@ -2,23 +2,41 @@ class Details {
     static details = () => {
         const details = document.createElement("details")
 
-        details.appendChild(this.summary())
-        details.appendChild(this.describe())
+        details.style.margin = "5px"
+
+        details.appendChild(this.#summary())
+        details.appendChild(this.#describe())
         details.open = false
         return details
     }
 
-    static summary = () => {
+    static #summary = () => {
         const summary = document.createElement("summary")
 
         summary.innerText = "説明"
         summary.style.fontSize = "30px"
         summary.style.fontWeight = "bold"
         summary.style.color = "hsla(111, 100%, 40%, 1)"
+        summary.style.cursor = "pointer"
+        summary.style.transition = "none"
+        summary.style.width = "fit-content"
+        summary.style.borderRadius = "5px"
+        summary.style.padding = "0px 5px"
+        
+        summary.addEventListener("mouseover", () => {
+            summary.style.transition = "all, 0.5s ease-out"
+            summary.style.color = "hsla(300, 100%, 40%, 1)"
+            summary.style.backgroundColor = "hsla(180, 0%, 80%, 1)"
+        })
+        summary.addEventListener("mouseout", () => {
+            summary.style.transition = "all, 1s ease-out"
+            summary.style.color = "hsla(111, 100%, 40%, 1)"
+            summary.style.backgroundColor = ""
+        })
         return summary
     }
 
-    static describe = () => {
+    static #describe = () => {
         const describe = document.createElement("p")
 
         describe.style.fontSize = "1rem"

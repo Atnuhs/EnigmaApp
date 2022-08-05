@@ -17,25 +17,42 @@ class EncryptScenario {
 
 
     encrypt(inputText, inputCommunicationKey) {
+
+        if (inputCommunicationKey === "") { return ["","",""]}
+
+        let dailyKey, preconfiguredEnigma
+
         try {
             // 1. Generate today's daily key for initialize enigma
-            const dailyKey = this.#dailyKeyService.generateDailyKey()
+            dailyKey = this.#dailyKeyService.generateDailyKey()
 
             // 2. Generate preconfigured enigma 
-            const preconfiguredEnigma = this.#enigmaFactory.enigmaInitializedWithDailyKey(dailyKey)
+            preconfiguredEnigma = this.#enigmaFactory.enigmaInitializedWithDailyKey(dailyKey)
 
-            // 3. Encrypt communication key
-            const [cipherCommunicationKey, enigma]
-                = this.#encryptCommunicationKeyService.encrypt(inputCommunicationKey, preconfiguredEnigma)
-
-            // 4. Encrypt text
-            const cipherText = this.#encryptTextService.encrypt(inputText, enigma)
-
-            return `${cipherCommunicationKey} ${cipherText}`
         } catch (error) {
-            console.error(error)
-            return `${error.message}`
+            return ["", "日替わり鍵でエニグマを初期化するときのエラー", ""]
         }
+
+        let cipherCommunicationKey, enigma
+
+        try {
+            // 3. Encrypt communication key
+            [cipherCommunicationKey, enigma]
+                = this.#encryptCommunicationKeyService.encrypt(inputCommunicationKey, preconfiguredEnigma)
+        } catch (error) {
+            return ["", error.message, ""]
+        }
+
+        let cipherText
+
+        try {
+            // 4. Encrypt text
+            cipherText = this.#encryptTextService.encrypt(inputText, enigma)
+        } catch (error) {
+            return ["", "", error.message]
+        }
+
+        return [`${cipherCommunicationKey} ${cipherText}`, "", ""]
     }
 }
 

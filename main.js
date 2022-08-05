@@ -7,6 +7,7 @@ import { TextEncryptionDecryptionAreaViwer } from "./viwer/textEncryptionDecrypt
 
 
 window.onload = () => {
+    document.body.style.fontSize = "62.5%"
     const textEncryptionDecryptionAreaViwer = new TextEncryptionDecryptionAreaViwer()
     document.body.appendChild(textEncryptionDecryptionAreaViwer.container)
 };
