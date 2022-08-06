@@ -1,3 +1,5 @@
+import { Detail } from "../detail/detail.js"
+
 class DailyKey {
     #numRotors
     #rotorsPresetOrder
@@ -44,6 +46,28 @@ class DailyKey {
         return this.#plugBoardScramblerPreset
     }
 
+
+    detail() {
+        return Detail.fromObject(
+            {
+                HEADLINE: "DAILY KEY DETAIL",
+                CONTENTS: {
+                    "NUM ROTORS": `${this.#numRotors}`,
+                    "ROTORS SETTING":
+                        this.rotorsSetting()
+                            .map(d => {
+                                return {
+                                    "PRESET ORDER": `${d["presetOrder"]}`,
+                                    "ANGLE": `${d["angle"]}`
+                                }
+                            }),
+                    "PLUG BOARD PRESET": [
+                        {"PRESET ORDER": `${this.#plugBoardScramblerPreset}`}
+                    ]
+                }
+            }
+        )
+    }
 }
 
 export { DailyKey }
