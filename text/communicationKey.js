@@ -1,3 +1,4 @@
+import { Detail } from "../detail/detail.js"
 import { KeyIndexConverter } from "../enigma/enigma.js"
 import { Text } from "./text.js"
 
@@ -6,6 +7,7 @@ class CommunicationKey {
     constructor(communicationKeyStr) {
         this.#value = new Text(communicationKeyStr)
         this.#checkValidation()
+        console.log(this.detail().describe())
     }
 
     #checkValidation() {
@@ -27,6 +29,20 @@ class CommunicationKey {
 
     toString() {
         return this.#value.toString()
+    }
+
+    detail() {
+        return Detail.fromObject({
+            "HEADLINE": "COMMUNICATION KEY DETAIL",
+            "CONTENTS": {
+                "RAWVALUE": `${this.toString()}`,
+                "ROTORS ANGLE":
+                    this.rotorsAngle().map((angle, index) => {
+                        return {[`${index}TH ROTOR ANGLE`]: `${angle}`}
+                    })
+            }
+        }
+        )
     }
 }
 
