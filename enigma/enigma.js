@@ -1,3 +1,4 @@
+import { Detail } from "../detail/detail.js";
 class KeyIndexConverter {
     static keyToIndex(key) {
         const alphabet = "abcdefghijklmnopqrstuvwxyz";
@@ -42,6 +43,34 @@ class Scrambler {
     copy() {
         return new Scrambler([... this.#wiringDiagramFowardOrder])
     }
+
+
+    contents() {
+        return [
+            {
+                "FORWARD ORDER": [
+                    {
+                        "INDEX": this.#wiringDiagramFowardOrder
+                            .map((_, index) => KeyIndexConverter.indexToKey(index))
+                            .join(" "),
+                        "VALUE": this.#wiringDiagramFowardOrder
+                            .map(value => KeyIndexConverter.indexToKey(value))
+                            .join(" ")
+                    }
+                ],
+                "REVERSE ORDER": [
+                    {
+                        "INDEX": this.#wiringDiagramReverseOrder
+                            .map((_, index) => KeyIndexConverter.indexToKey(index))
+                            .join(" "),
+                        "VALUE": this.#wiringDiagramReverseOrder
+                            .map(value => KeyIndexConverter.indexToKey(value))
+                            .join(" ")
+                    }
+                ]
+            }
+        ]
+    }
 }
 
 class PlugBoard {
@@ -60,6 +89,14 @@ class PlugBoard {
 
     copy() {
         return new PlugBoard(this.#scrambler.copy())
+    }
+
+    contents() {
+        return [
+            {
+                "SCRAMBLER PART": this.#scrambler.contents()
+            }
+        ]
     }
 }
 
@@ -97,6 +134,15 @@ class Rotor {
     copy() {
         return new Rotor(this.#scrambler.copy(), this.#angle)
     }
+
+    contents() {
+        return [
+            {
+                "ROTOR ANGLE": `${this.#angle}`,
+                "SCRAMBLER PART": this.#scrambler.contents()
+            }
+        ]
+    }
 }
 
 class Reflector {
@@ -105,6 +151,20 @@ class Reflector {
     }
     copy() {
         return this
+    }
+
+    contents() {
+        const indexArray = [...Array(26)].map((_, index) => index)
+        return [
+            {
+                "FORWARD ORDER": indexArray
+                    .map(value => KeyIndexConverter.indexToKey(value))
+                    .join(" "),
+                "REVERSE ORDER": indexArray
+                    .map(value => KeyIndexConverter.indexToKey(this.reflect(value)))
+                    .join(" ")
+            }
+        ]
     }
 }
 
@@ -116,6 +176,8 @@ class Enigma {
         this.#plugboard = plugboard;
         this.#rotors = rotors;
         this.#reflector = reflector;
+        console.log(this.detail())
+        console.log(this.detail().describe())
     }
 
     #numEncryptionProcess() {
@@ -201,6 +263,21 @@ class Enigma {
             .split("")
             .map(key => this.typeKey(key))
             .join("")
+    }
+
+    detail() {
+        return Detail.fromObject(
+            {
+                "HEADLINE": "ENIGMA DETAIL",
+                "CONTENTS": {
+                    "PLUG BOARD PART": this.#plugboard.contents(),
+                    "ROTORS PART": this.#rotors.map((rotor, index) => {
+                        return { [`${index}TH ROTOR PART`]: rotor.contents() }
+                    }),
+                    "REFLECTOR PART": this.#reflector.contents()
+                }
+            }
+        )
     }
 }
 export { Scrambler, PlugBoard, Reflector, Rotor, Enigma, KeyIndexConverter };

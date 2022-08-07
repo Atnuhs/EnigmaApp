@@ -25,11 +25,13 @@ class EncryptScenario {
         try {
             // 1. Generate today's daily key for initialize enigma
             dailyKey = this.#dailyKeyService.generateDailyKey()
+            console.log(dailyKey.detail().describe())
 
             // 2. Generate preconfigured enigma 
             preconfiguredEnigma = this.#enigmaFactory.enigmaInitializedWithDailyKey(dailyKey)
 
         } catch (error) {
+            console.error(error)
             return ["", "日替わり鍵でエニグマを初期化するときのエラー", ""]
         }
 
