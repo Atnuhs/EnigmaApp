@@ -1,22 +1,22 @@
-import { Detail } from "../detail/detail.js"
-import { KeyIndexConverter } from "../enigma/enigma.js"
-import { Text } from "./text.js"
+import { Detail } from "../detail/detail.js";
+import { KeyIndexConverter } from "../enigma/enigma.js";
+import { Text } from "./text.js";
 
 class CommunicationKey {
-    #value
+    #value;
     constructor(communicationKeyStr) {
-        this.#value = new Text(communicationKeyStr)
-        this.#checkValidation()
-        console.log(this.detail().describe())
+        this.#value = new Text(communicationKeyStr);
+        this.#checkValidation();
+        console.log(this.detail().describe());
     }
 
     #checkValidation() {
         if (this.toString().length != 6) {
-            throw new TypeError("秘密鍵は6文字でなければならない")
+            throw new TypeError("秘密鍵は6文字でなければならない");
         }
 
         if (this.toString().substring(0, 3) != this.toString().substring(3, 6)) {
-            throw new TypeError("秘密鍵は1-3文字目の部分文字列と4-6文字目の部分文字列が等しくなければならない")
+            throw new TypeError("秘密鍵は1-3文字目の部分文字列と4-6文字目の部分文字列が等しくなければならない");
         }
     }
 
@@ -24,27 +24,24 @@ class CommunicationKey {
         return this.#value
             .toArray()
             .slice(0, 3)
-            .map(x => KeyIndexConverter.keyToIndex(x))
+            .map((x) => KeyIndexConverter.keyToIndex(x));
     }
 
     toString() {
-        return this.#value.toString()
+        return this.#value.toString();
     }
 
     detail() {
         return Detail.fromObject({
-            "HEADLINE": "COMMUNICATION KEY DETAIL",
-            "CONTENTS": {
-                "RAWVALUE": `${this.toString()}`,
-                "ROTORS ANGLE":
-                    this.rotorsAngle().map((angle, index) => {
-                        return {[`${index}TH ROTOR ANGLE`]: `${angle}`}
-                    })
-            }
-        }
-        )
+            HEADLINE: "COMMUNICATION KEY DETAIL",
+            CONTENTS: {
+                RAWVALUE: `${this.toString()}`,
+                "ROTORS ANGLE": this.rotorsAngle().map((angle, index) => {
+                    return { [`${index}TH ROTOR ANGLE`]: `${angle}` };
+                }),
+            },
+        });
     }
 }
 
-
-export { CommunicationKey }
+export { CommunicationKey };

@@ -15,8 +15,8 @@ class KeyIndexConverter {
 }
 
 class Scrambler {
-    #wiringDiagramFowardOrder
-    #wiringDiagramReverseOrder
+    #wiringDiagramFowardOrder;
+    #wiringDiagramReverseOrder;
     constructor(wiringDiagramFowardOrder) {
         this.#wiringDiagramFowardOrder = wiringDiagramFowardOrder;
         this.#wiringDiagramReverseOrder = this.#generateWiringDiagramReverseOrder();
@@ -41,40 +41,31 @@ class Scrambler {
     }
 
     copy() {
-        return new Scrambler([... this.#wiringDiagramFowardOrder])
+        return new Scrambler([...this.#wiringDiagramFowardOrder]);
     }
-
 
     contents() {
         return [
             {
                 "FORWARD ORDER": [
                     {
-                        "INDEX": this.#wiringDiagramFowardOrder
-                            .map((_, index) => KeyIndexConverter.indexToKey(index))
-                            .join(" "),
-                        "VALUE": this.#wiringDiagramFowardOrder
-                            .map(value => KeyIndexConverter.indexToKey(value))
-                            .join(" ")
-                    }
+                        INDEX: this.#wiringDiagramFowardOrder.map((_, index) => KeyIndexConverter.indexToKey(index)).join(" "),
+                        VALUE: this.#wiringDiagramFowardOrder.map((value) => KeyIndexConverter.indexToKey(value)).join(" "),
+                    },
                 ],
                 "REVERSE ORDER": [
                     {
-                        "INDEX": this.#wiringDiagramReverseOrder
-                            .map((_, index) => KeyIndexConverter.indexToKey(index))
-                            .join(" "),
-                        "VALUE": this.#wiringDiagramReverseOrder
-                            .map(value => KeyIndexConverter.indexToKey(value))
-                            .join(" ")
-                    }
-                ]
-            }
-        ]
+                        INDEX: this.#wiringDiagramReverseOrder.map((_, index) => KeyIndexConverter.indexToKey(index)).join(" "),
+                        VALUE: this.#wiringDiagramReverseOrder.map((value) => KeyIndexConverter.indexToKey(value)).join(" "),
+                    },
+                ],
+            },
+        ];
     }
 }
 
 class PlugBoard {
-    #scrambler
+    #scrambler;
     constructor(scrambler) {
         this.#scrambler = scrambler;
     }
@@ -88,24 +79,24 @@ class PlugBoard {
     }
 
     copy() {
-        return new PlugBoard(this.#scrambler.copy())
+        return new PlugBoard(this.#scrambler.copy());
     }
 
     contents() {
         return [
             {
-                "SCRAMBLER PART": this.#scrambler.contents()
-            }
-        ]
+                "SCRAMBLER PART": this.#scrambler.contents(),
+            },
+        ];
     }
 }
 
 class Rotor {
-    #scrambler
-    #angle
+    #scrambler;
+    #angle;
     constructor(scrambler, angle) {
         this.#scrambler = scrambler;
-        this.#angle = angle
+        this.#angle = angle;
     }
 
     passFowardOrder(i) {
@@ -126,22 +117,21 @@ class Rotor {
         return this.#angle === 0;
     }
 
-
     setAngle(angle) {
-        return new Rotor(this.#scrambler.copy(), angle)
+        return new Rotor(this.#scrambler.copy(), angle);
     }
 
     copy() {
-        return new Rotor(this.#scrambler.copy(), this.#angle)
+        return new Rotor(this.#scrambler.copy(), this.#angle);
     }
 
     contents() {
         return [
             {
                 "ROTOR ANGLE": `${this.#angle}`,
-                "SCRAMBLER PART": this.#scrambler.contents()
-            }
-        ]
+                "SCRAMBLER PART": this.#scrambler.contents(),
+            },
+        ];
     }
 }
 
@@ -150,42 +140,37 @@ class Reflector {
         return 25 - i;
     }
     copy() {
-        return this
+        return this;
     }
 
     contents() {
-        const indexArray = [...Array(26)].map((_, index) => index)
+        const indexArray = [...Array(26)].map((_, index) => index);
         return [
             {
-                "FORWARD ORDER": indexArray
-                    .map(value => KeyIndexConverter.indexToKey(value))
-                    .join(" "),
-                "REVERSE ORDER": indexArray
-                    .map(value => KeyIndexConverter.indexToKey(this.reflect(value)))
-                    .join(" ")
-            }
-        ]
+                "FORWARD ORDER": indexArray.map((value) => KeyIndexConverter.indexToKey(value)).join(" "),
+                "REVERSE ORDER": indexArray.map((value) => KeyIndexConverter.indexToKey(this.reflect(value))).join(" "),
+            },
+        ];
     }
 }
 
 class Enigma {
-    #plugboard
-    #rotors
-    #reflector
+    #plugboard;
+    #rotors;
+    #reflector;
     constructor(plugboard, rotors, reflector) {
         this.#plugboard = plugboard;
         this.#rotors = rotors;
         this.#reflector = reflector;
-        console.log(this.detail())
-        console.log(this.detail().describe())
+        console.log(this.detail());
+        console.log(this.detail().describe());
     }
 
     #numEncryptionProcess() {
-        return this.#rotors.length * 2 + 4
+        return this.#rotors.length * 2 + 4;
     }
 
     #rotateRotor() {
-
         for (const rotor of this.#rotors) {
             if (!rotor.rotate()) return;
         }
@@ -193,43 +178,31 @@ class Enigma {
 
     resetRotorsAngle(angles) {
         const rotors = this.#rotors.map((rotor, index) => {
-            return rotor.setAngle(angles[index])
-        })
-        return new Enigma(
-            this.#plugboard.copy(),
-            rotors,
-            this.#reflector.copy()
-        )
+            return rotor.setAngle(angles[index]);
+        });
+        return new Enigma(this.#plugboard.copy(), rotors, this.#reflector.copy());
     }
 
     typeKeyDetail(key) {
         let encrypting_detail = new Array(this.#numEncryptionProcess());
-        let iEncryptingDetail = 0
+        let iEncryptingDetail = 0;
 
         // key to index
-        encrypting_detail[iEncryptingDetail++]
-            = KeyIndexConverter.keyToIndex(key);
+        encrypting_detail[iEncryptingDetail++] = KeyIndexConverter.keyToIndex(key);
 
         // pass forward order /////////////////////////////////////////////////////
 
         // pass plugboard
-        encrypting_detail[iEncryptingDetail]
-            = this.#plugboard.passFowardOrder(
-                encrypting_detail[iEncryptingDetail++ - 1]
-            );
+        encrypting_detail[iEncryptingDetail] = this.#plugboard.passFowardOrder(encrypting_detail[iEncryptingDetail++ - 1]);
 
         // pass rotors
         this.#rotors.forEach((rotor) => {
-            encrypting_detail[iEncryptingDetail] = rotor.passFowardOrder(
-                encrypting_detail[iEncryptingDetail++ - 1]
-            );
+            encrypting_detail[iEncryptingDetail] = rotor.passFowardOrder(encrypting_detail[iEncryptingDetail++ - 1]);
         });
 
         // reflection /////////////////////////////////////////////////////
 
-        encrypting_detail[iEncryptingDetail] = this.#reflector.reflect(
-            encrypting_detail[iEncryptingDetail++ - 1]
-        );
+        encrypting_detail[iEncryptingDetail] = this.#reflector.reflect(encrypting_detail[iEncryptingDetail++ - 1]);
 
         // pass forward order /////////////////////////////////////////////////////
 
@@ -238,46 +211,38 @@ class Enigma {
             .slice()
             .reverse()
             .forEach((rotor) => {
-                encrypting_detail[iEncryptingDetail] = rotor.passReverseOrder(
-                    encrypting_detail[iEncryptingDetail++ - 1]
-                );
+                encrypting_detail[iEncryptingDetail] = rotor.passReverseOrder(encrypting_detail[iEncryptingDetail++ - 1]);
             });
 
         // pass plugboard
-        encrypting_detail[iEncryptingDetail] = this.#plugboard.passReverseOrder(
-            encrypting_detail[iEncryptingDetail++ - 1]
-        );
+        encrypting_detail[iEncryptingDetail] = this.#plugboard.passReverseOrder(encrypting_detail[iEncryptingDetail++ - 1]);
 
         this.#rotateRotor();
         return encrypting_detail;
     }
 
     typeKey(key) {
-        return KeyIndexConverter.indexToKey(
-            this.typeKeyDetail(key).slice(-1)[0]
-        );
+        return KeyIndexConverter.indexToKey(this.typeKeyDetail(key).slice(-1)[0]);
     }
 
     typeText(text) {
         return text
             .split("")
-            .map(key => this.typeKey(key))
-            .join("")
+            .map((key) => this.typeKey(key))
+            .join("");
     }
 
     detail() {
-        return Detail.fromObject(
-            {
-                "HEADLINE": "ENIGMA DETAIL",
-                "CONTENTS": {
-                    "PLUG BOARD PART": this.#plugboard.contents(),
-                    "ROTORS PART": this.#rotors.map((rotor, index) => {
-                        return { [`${index}TH ROTOR PART`]: rotor.contents() }
-                    }),
-                    "REFLECTOR PART": this.#reflector.contents()
-                }
-            }
-        )
+        return Detail.fromObject({
+            HEADLINE: "ENIGMA DETAIL",
+            CONTENTS: {
+                "PLUG BOARD PART": this.#plugboard.contents(),
+                "ROTORS PART": this.#rotors.map((rotor, index) => {
+                    return { [`${index}TH ROTOR PART`]: rotor.contents() };
+                }),
+                "REFLECTOR PART": this.#reflector.contents(),
+            },
+        });
     }
 }
 export { Scrambler, PlugBoard, Reflector, Rotor, Enigma, KeyIndexConverter };

@@ -1,13 +1,13 @@
-import { Text } from "./text.js"
+import { Text } from "./text.js";
 
 class CipherText {
-    #value
+    #value;
     constructor(cipherText) {
-        this.#value = new Text(cipherText)
+        this.#value = new Text(cipherText);
     }
 
     toString() {
-        return this.#value.toString()
+        return this.#value.toString();
     }
 }
-export { CipherText }
+export { CipherText };

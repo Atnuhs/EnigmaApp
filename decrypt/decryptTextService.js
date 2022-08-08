@@ -1,10 +1,10 @@
-import { CipherText } from "../text/cipherText.js"
+import { CipherText } from "../text/cipherText.js";
 
 class DecryptTextService {
     decrypt(inputCipherText, enigma) {
-        const cipherText = new CipherText(inputCipherText)
-        return enigma.typeText(cipherText.toString())
+        const cipherText = new CipherText(inputCipherText);
+        return enigma.typeText(cipherText.toString());
     }
 }
 
-export { DecryptTextService }
+export { DecryptTextService };
