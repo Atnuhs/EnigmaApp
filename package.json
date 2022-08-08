@@ -5,6 +5,7 @@
   },
 
   "scripts": {
-    "format": "prettier --write \"**/*.js\""
+    "format": "prettier --write \"**/*.js\"",
+    "format2": "eslint --fix \"**/*.js\""
   }
 }
