@@ -49,13 +49,13 @@ class TextContainer {
         return message;
     };
 
-    getInputValue = () => {
+    getInputValue() {
         return this.input.value;
-    };
+    }
 
-    setInputValue = (value) => {
+    setInputValue(value) {
         this.input.value = value;
-    };
+    }
 
     setCautionMessage(message) {
         this.message.innerText = message;
@@ -114,13 +114,13 @@ class TextAreaContainer {
         return message;
     };
 
-    getInputValue = () => {
+    getInputValue() {
         return this.textArea.value;
-    };
+    }
 
-    setInputValue = (value) => {
+    setInputValue(value) {
         this.textArea.value = value;
-    };
+    }
 
     setCautionMessage(message) {
         this.message.innerText = message;
@@ -298,9 +298,9 @@ class DecryptContainer {
         return decryptedTextContainer;
     };
 
-    getContainer = () => {
+    getContainer() {
         return this.container;
-    };
+    }
 
     decyptedCommunicationKeyValue() {
         return this.decryptedCommunicationKeyContainer.getInputValue();

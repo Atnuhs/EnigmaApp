@@ -49,7 +49,7 @@ class TextEncryptionDecryptionAreaViwer {
     }
 
     eventDecrypt() {
-        return async () => {
+        return () => {
             const textToDecrypt = this.decryptContainer.textToDecryptValue();
             const [communicationKey, text, messageTextToDecrypt] = this.decryptScenario.decrypt(textToDecrypt);
             this.decryptContainer.setCautionTextToDecrypt(messageTextToDecrypt);
