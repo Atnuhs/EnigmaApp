@@ -10,7 +10,6 @@ class HeaderContainer {
         const header = document.createElement("h1");
 
         header.innerText = "エニグマ暗号化/復号化アプリ ver0.3";
-        header.style.fontSize = "3rem";
         return header;
     };
 }

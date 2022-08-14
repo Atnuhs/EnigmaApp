@@ -12,22 +12,11 @@ class TextContainer {
 
     static #container = () => {
         const container = document.createElement("div");
-
-        container.style.backgroundColor = "#eee";
-        container.style.width = "10rem";
-        container.style.borderRadius = "30% / 15%";
-        container.style.padding = "8px";
-        container.style.margin = "auto";
-
-        container.style.display = "flex";
-        container.style.flexDirection = "column";
-        container.style.alignItems = "center";
-        container.style.justifyContent = "center";
         return container;
     };
 
     static #headline = (headlineText) => {
-        const headline = document.createElement("p");
+        const headline = document.createElement("h3");
 
         headline.innerText = headlineText;
         return headline;
@@ -35,10 +24,6 @@ class TextContainer {
 
     static #input = () => {
         const input = document.createElement("input");
-
-        input.style.boxSizing = "border-box";
-        input.style.width = "100%";
-        input.style.fontSize = "16px";
 
         return input;
     };
@@ -60,7 +45,6 @@ class TextContainer {
     setCautionMessage(message) {
         this.message.innerText = message;
         this.message.style.color = "#f33";
-        this.message.style.fontSize = "16px";
         this.message.style.fontStyle = "bold";
     }
 }
@@ -80,21 +64,11 @@ class TextAreaContainer {
     static #container = () => {
         const container = document.createElement("div");
 
-        container.style.backgroundColor = "#eee";
-        container.style.minWidth = "10rem";
-        container.style.borderRadius = "30% / 15%";
-        container.style.padding = "8px";
-        container.style.margin = "auto";
-
-        container.style.display = "flex";
-        container.style.flexDirection = "column";
-        container.style.alignItems = "center";
-        container.style.justifyContent = "center";
         return container;
     };
 
     static #headline = (headlineText) => {
-        const headline = document.createElement("p");
+        const headline = document.createElement("h3");
 
         headline.innerText = headlineText;
         return headline;
@@ -103,14 +77,14 @@ class TextAreaContainer {
     static #textArea = () => {
         const input = document.createElement("textArea");
 
-        input.rows = 8;
-        input.cols = 30;
         input.style.fontSize = "16px";
         return input;
     };
 
     static #message = () => {
         const message = document.createElement("p");
+        message.style.overflowWrap = "word-break";
+        this.width = "100%";
         return message;
     };
 
@@ -125,7 +99,6 @@ class TextAreaContainer {
     setCautionMessage(message) {
         this.message.innerText = message;
         this.message.style.color = "#f33";
-        this.message.style.fontSize = "16px";
         this.message.style.fontStyle = "bold";
     }
 }
@@ -133,14 +106,14 @@ class TextAreaContainer {
 class EncryptContainer {
     constructor() {
         this.container = EncryptContainer.#container();
-        this.headline = EncryptContainer.#headline();
         this.innerContainer = EncryptContainer.#innerContainer();
+        this.headline = EncryptContainer.#headline();
         this.communicationKeyContainer = EncryptContainer.#communicationKeyContainer();
         this.textToEncryptContainer = EncryptContainer.#textToEncryptContainer();
         this.encryptedTextContainer = EncryptContainer.#encryptedTextContainer();
 
-        this.container.appendChild(this.headline);
         this.container.appendChild(this.innerContainer);
+        this.innerContainer.appendChild(this.headline);
         this.innerContainer.appendChild(this.communicationKeyContainer.container);
         this.innerContainer.appendChild(this.textToEncryptContainer.container);
         this.innerContainer.appendChild(this.encryptedTextContainer.container);
@@ -149,32 +122,29 @@ class EncryptContainer {
     static #container = () => {
         const container = document.createElement("div");
 
-        container.style.backgroundColor = "#fbb";
-        container.style.padding = "5px 30px";
+        container.style.backgroundColor = "#cfc";
+        container.style.width = "100%";
+        container.style.display = "flex";
+        container.style.flexDirection = "column";
+        container.style.justifyContent = "center";
+        container.style.alignItems = "center";
+
         return container;
-    };
-
-    static #headline = () => {
-        const headline = document.createElement("p");
-
-        headline.innerText = "暗号化";
-        headline.style.backgroundColor = "hsla(260,100%,70%,0.5)";
-        headline.style.margin = "5px";
-        headline.style.padding = "5px 30px";
-        headline.style.borderRadius = "20% / 50%";
-        headline.style.width = "fit-content";
-        return headline;
     };
 
     static #innerContainer = () => {
         const innerContainer = document.createElement("div");
 
-        innerContainer.style.display = "flex";
-        innerContainer.style.justifyContent = "center";
-        innerContainer.style.flexFlow = "wrap";
-        innerContainer.style.margin = "5px";
-        innerContainer.style.padding = "5px";
+        innerContainer.style.width = "70%";
+        innerContainer.style.backgroundColor = "#ccc";
         return innerContainer;
+    };
+
+    static #headline = () => {
+        const headline = document.createElement("h2");
+
+        headline.innerText = "暗号化";
+        return headline;
     };
 
     static #communicationKeyContainer = () => {
@@ -183,16 +153,12 @@ class EncryptContainer {
         communicationKeyContainer.input.maxLength = 6;
         communicationKeyContainer.input.placeholder = "psvpsv";
         communicationKeyContainer.input.pattern = /([a-z]{3}){2}/;
-        communicationKeyContainer.container.style.border = "5px solid #7dd";
-        communicationKeyContainer.headline.style.color = "#4aa";
         return communicationKeyContainer;
     };
 
     static #textToEncryptContainer = () => {
         const textToEncryptContainer = new TextAreaContainer("平文");
 
-        textToEncryptContainer.container.style.border = "5px solid #7dd";
-        textToEncryptContainer.headline.style.color = "#4aa";
         return textToEncryptContainer;
     };
 
@@ -240,8 +206,8 @@ class DecryptContainer {
         this.decryptedCommunicationKeyContainer = DecryptContainer.#decryptedCommunicationKeyContainer();
         this.decryptedTextContainer = DecryptContainer.#decryptedTextContainer();
 
-        this.container.appendChild(this.headline);
         this.container.appendChild(this.innerContainer);
+        this.innerContainer.appendChild(this.headline);
         this.innerContainer.appendChild(this.textToDecryptContainer.container);
         this.innerContainer.appendChild(this.decryptedCommunicationKeyContainer.container);
         this.innerContainer.appendChild(this.decryptedTextContainer.container);
@@ -250,39 +216,33 @@ class DecryptContainer {
     static #container = () => {
         const container = document.createElement("div");
 
-        container.style.backgroundColor = "#bfb";
-        container.style.padding = "5px 30px";
+        container.style.width = "100%";
+        container.style.backgroundColor = "#ccf";
+        container.style.display = "flex";
+        container.style.flexDirection = "column";
+        container.style.justifyContent = "center";
+        container.style.alignItems = "center";
         return container;
-    };
-
-    static #headline = () => {
-        const headline = document.createElement("p");
-
-        headline.innerText = "復号化";
-        headline.style.backgroundColor = "hsla(260,100%,70%,0.5)";
-        headline.style.margin = "5px";
-        headline.style.padding = "5px 30px";
-        headline.style.borderRadius = "20% / 50%";
-        headline.style.width = "fit-content";
-        return headline;
     };
 
     static #innerContainer = () => {
         const innerContainer = document.createElement("div");
 
-        innerContainer.style.display = "flex";
-        innerContainer.style.justifyContent = "center";
-        innerContainer.style.flexFlow = "wrap";
-        innerContainer.style.margin = "5px";
-        innerContainer.style.padding = "5px";
+        innerContainer.style.width = "70%";
+        innerContainer.style.backgroundColor = "#ccc";
         return innerContainer;
+    };
+
+    static #headline = () => {
+        const headline = document.createElement("h2");
+
+        headline.innerText = "復号化";
+        return headline;
     };
 
     static #textToDecryptContainer = () => {
         const textToDecryptContainer = new TextAreaContainer("暗号文");
 
-        textToDecryptContainer.container.style.border = "5px solid #7dd";
-        textToDecryptContainer.headline.style.color = "#4aa";
         return textToDecryptContainer;
     };
 

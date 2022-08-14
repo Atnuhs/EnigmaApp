@@ -25,15 +25,12 @@ class TextEncryptionDecryptionAreaViwer {
 
     static #container = () => {
         const container = document.createElement("div");
-
-        container.style.margin = "auto";
         container.style.position = "relative";
-        container.style.backgroundColor = "#eee";
-        container.style.color = "#343";
-        container.style.fontFamily = "Sawarabi Gothic";
-        container.style.fontSize = "26px";
-        container.style.width = "80%";
-        container.style.maxWidth = "1000px";
+        container.style.width = "300px";
+        container.style.display = "flex";
+        container.style.flexDirection = "column";
+        container.style.justifyContent = "center";
+        container.style.alignItems = "center";
         return container;
     };
 

@@ -2,11 +2,10 @@ class Details {
     static details = () => {
         const details = document.createElement("details");
 
-        details.style.margin = "5px";
-
         details.appendChild(this.#summary());
         details.appendChild(this.#describe());
         details.open = false;
+        details.style.width = "100%";
         return details;
     };
 
@@ -14,24 +13,19 @@ class Details {
         const summary = document.createElement("summary");
 
         summary.innerText = "説明";
-        summary.style.fontSize = "30px";
         summary.style.fontWeight = "bold";
-        summary.style.color = "hsla(111, 100%, 40%, 1)";
         summary.style.cursor = "pointer";
         summary.style.transition = "none";
-        summary.style.width = "fit-content";
-        summary.style.borderRadius = "5px";
-        summary.style.padding = "0px 5px";
+        summary.style.color = "hsla(111, 100%, 40%, 1)";
+        summary.style.fontSize = "20px";
 
         summary.addEventListener("mouseover", () => {
             summary.style.transition = "all, 0.5s ease-out";
             summary.style.color = "hsla(300, 100%, 40%, 1)";
-            summary.style.backgroundColor = "hsla(180, 0%, 80%, 1)";
         });
         summary.addEventListener("mouseout", () => {
             summary.style.transition = "all, 1s ease-out";
             summary.style.color = "hsla(111, 100%, 40%, 1)";
-            summary.style.backgroundColor = "";
         });
         return summary;
     };
@@ -39,8 +33,7 @@ class Details {
     static #describe = () => {
         const describe = document.createElement("p");
 
-        describe.style.fontSize = "1rem";
-        describe.style.color = "hsla(111, 70%, 35%, 0.8)";
+        describe.style.color = "hsla(111, 70%, 35%, 1)";
         describe.innerText = `暗号化: 通信鍵と暗号化したい文章を入力すると、暗号化された文章が出てきます。
             通信鍵によってEnigmaの中身がscrambleされるため、同じ文章でも異なる通信鍵を用いることで、異なる暗号文が生成されます
             復号化: 暗号化された文章を貼り付けることで通信鍵と文章の復号化を行います。
