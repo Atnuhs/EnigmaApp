@@ -1,17 +1,22 @@
-import { DecryptScenario } from "../decrypt/decryptScenario.js";
 import { EncryptScenario } from "../encrypt/encryptScenario.js";
 import { Details } from "./details.js";
 import { HeaderContainer } from "./header.js";
 import { DecryptContainer, EncryptContainer } from "./inputElement.js";
+import { Tab, TabBar } from "./tabBar.js";
 
 class TextEncryptionDecryptionAreaViwer {
     constructor() {
         this.container = TextEncryptionDecryptionAreaViwer.#container();
         this.encryptContainer = new EncryptContainer();
         this.decryptContainer = new DecryptContainer();
+        this.encryptTab = new Tab("#cfc", "暗号化", this.eventTapEncryptTab());
+        this.decryptTab = new Tab("#ccf", "復号化", this.eventTabDecryptTab());
+
+        this.decryptContainer.getContainer().style.display = "none"
 
         this.container.appendChild(HeaderContainer.headerContainer());
         this.container.appendChild(Details.details());
+        this.container.appendChild(TabBar.tabBarContainer([this.encryptTab, this.decryptTab]));
         this.container.appendChild(this.encryptContainer.getContainer());
         this.container.appendChild(this.decryptContainer.getContainer());
 
@@ -23,16 +28,6 @@ class TextEncryptionDecryptionAreaViwer {
         this.decryptContainer.textToDecryptContainer.textArea.addEventListener("input", this.eventDecrypt());
     }
 
-    static #container = () => {
-        const container = document.createElement("div");
-        container.style.position = "relative";
-        container.style.width = "300px";
-        container.style.display = "flex";
-        container.style.flexDirection = "column";
-        container.style.justifyContent = "center";
-        container.style.alignItems = "center";
-        return container;
-    };
 
     eventEncrypt() {
         return () => {
@@ -52,6 +47,24 @@ class TextEncryptionDecryptionAreaViwer {
             this.decryptContainer.setCautionTextToDecrypt(messageTextToDecrypt);
             this.decryptContainer.setDecryptedCommunicationKey(communicationKey);
             this.decryptContainer.setDecryptedText(text);
+        };
+    }
+
+    eventTapEncryptTab() {
+        return () => {
+            this.encryptContainer.display();
+            this.encryptTab.tab.backgroundColor = "#cfc"
+            this.decryptContainer.displayNone();
+            this.decryptTab.tab.backgroundColor = "#446"
+        };
+    }
+
+    eventTabDecryptTab() {
+        return () => {
+            this.decryptContainer.display();
+            this.decryptTab.tab.backgroundColor = "#464"
+            this.encryptContainer.displayNone();
+            this.encryptTab.tab.backgroundColor = "#ccf"
         };
     }
 }

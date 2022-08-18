@@ -116,6 +116,7 @@ class EncryptContainer {
         this.innerContainer.appendChild(this.headline);
         this.innerContainer.appendChild(this.communicationKeyContainer.container);
         this.innerContainer.appendChild(this.textToEncryptContainer.container);
+        this.innerContainer.appendChild(document.createElement("hr"));
         this.innerContainer.appendChild(this.encryptedTextContainer.container);
     }
 
@@ -136,7 +137,6 @@ class EncryptContainer {
         const innerContainer = document.createElement("div");
 
         innerContainer.style.width = "70%";
-        innerContainer.style.backgroundColor = "#ccc";
         return innerContainer;
     };
 
@@ -195,6 +195,14 @@ class EncryptContainer {
     setCautionTextToEncrypt(message) {
         this.textToEncryptContainer.setCautionMessage(message);
     }
+
+    displayNone() {
+        this.container.style.display = "none";
+    }
+
+    display() {
+        this.container.style.display = "flex";
+    }
 }
 
 class DecryptContainer {
@@ -209,6 +217,7 @@ class DecryptContainer {
         this.container.appendChild(this.innerContainer);
         this.innerContainer.appendChild(this.headline);
         this.innerContainer.appendChild(this.textToDecryptContainer.container);
+        this.innerContainer.appendChild(document.createElement("hr"));
         this.innerContainer.appendChild(this.decryptedCommunicationKeyContainer.container);
         this.innerContainer.appendChild(this.decryptedTextContainer.container);
     }
@@ -227,9 +236,7 @@ class DecryptContainer {
 
     static #innerContainer = () => {
         const innerContainer = document.createElement("div");
-
         innerContainer.style.width = "70%";
-        innerContainer.style.backgroundColor = "#ccc";
         return innerContainer;
     };
 
@@ -284,6 +291,14 @@ class DecryptContainer {
 
     setCautionTextToDecrypt(message) {
         this.textToDecryptContainer.setCautionMessage(message);
+    }
+
+    displayNone() {
+        this.container.style.display = "none";
+    }
+
+    display() {
+        this.container.style.display = "flex";
     }
 }
 export { EncryptContainer, DecryptContainer };

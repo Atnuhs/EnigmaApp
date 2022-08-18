@@ -1,7 +1,7 @@
-import { TextEncryptionDecryptionAreaViwer } from "./viwer/textEncryptionDecryptionAreaViwer.js";
+import { MainViewer } from "./viewer/mainViewer.js";
 
 window.onload = () => {
     document.body.style.fontSize = "62.5%";
-    const textEncryptionDecryptionAreaViwer = new TextEncryptionDecryptionAreaViwer();
-    document.body.appendChild(textEncryptionDecryptionAreaViwer.container);
+    const mainViewer = new MainViewer();
+    document.body.appendChild(mainViewer.container);
 };
