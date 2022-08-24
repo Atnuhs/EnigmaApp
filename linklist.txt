@@ -1,0 +1,12 @@
+
+# neovim
+nvim ${HOME}/.config/nvim
+
+#fish
+fish ${HOME}/.config/fish
+
+#oh-my-fish
+omf ${HOME}/.config/omf
+
+# tmux
+.tmux.conf ${HOME}/.tmux.conf

@@ -2,6 +2,12 @@ set -x GOPATH $HOME/dev
 set -x PATH $PATH $GOPATH/bin
 set -g theme_display_git_master_branch yes
 
+if type -q exa
+    alias ls 'exa --icons --git'
+    alias la "ls -a"
+    alias lla "ll -a"
+end
+
 function fish_user_key_bindings
   bind \c] peco_select_ghq      # Ctrl-]
   bind \cr peco_select_history  # Ctrl-r
@@ -35,7 +41,6 @@ function peco_select_history
 end
 
 alias vim=nvim
-alias ls='exa --icons --git'
 
 fish_user_key_bindings
 
